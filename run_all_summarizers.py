@@ -3,7 +3,11 @@ import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from summarizers import T5Summarizer, BartSummarizer, BertSummarizer
+from models.t5_summarizer import T5Summarizer
+from models.bart_summarizer import BartSummarizer
+from models.bert_summarizer import BertSummarizer
+import yaml
+import json
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -107,12 +111,44 @@ def summarize(text: str) -> dict:
     
     return summaries
 
+def load_config(config_path: str):
+    """
+    Load configuration from a YAML file.
+    
+    :param config_path: Path to the YAML configuration file.
+    :return: Configuration dictionary.
+    """
+    try:
+        with open(config_path, "r") as config_file:
+            return yaml.safe_load(config_file)
+    except FileNotFoundError:
+        logging.error(f"Configuration file not found: {config_path}")
+        raise
+    except yaml.YAMLError as e:
+        logging.error(f"Error parsing configuration file: {e}")
+        raise
+
+def save_summaries(summaries, output_filepath: str):
+    """
+    Save the summaries to a JSON file.
+    
+    :param summaries: Dictionary of summaries.
+    :param output_filepath: Path to the output JSON file.
+    """
+    try:
+        logging.info(f"Saving summaries to {output_filepath}...")
+        with open(output_filepath, 'w', encoding='utf-8') as file:
+            json.dump(summaries, file, indent=2)
+        logging.info(f"Saved summaries to {output_filepath}")
+    except Exception as e:
+        logging.error(f"Error saving summaries: {e}")
+
 def main():
     """
     Main function to run all summarizer scripts in parallel.
     """
     max_records = int(sys.argv[1]) if len(sys.argv) > 1 else None
-    scripts = ["t5_summarizer.py", "bart_summarizer.py", "bert_summarizer.py"]
+    scripts = ["models/t5_summarizer.py", "models/bart_summarizer.py", "models/bert_summarizer.py"]
     
     with ThreadPoolExecutor() as executor:
         futures = [executor.submit(run_script, script, max_records) for script in scripts]
@@ -132,7 +168,6 @@ if __name__ == "__main__":
         :param file_path: Path to the JSON file containing incidents.
         :return: List of incidents.
         """
-        import json
         with open(file_path, 'r') as file:
             incidents = json.load(file)
         return incidents

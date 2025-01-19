@@ -8,24 +8,7 @@ from evaluate import evaluate_main
 from models.t5_summarizer import T5Summarizer
 from models.bart_summarizer import BartSummarizer
 from models.bert_summarizer import BertSummarizer
-
-# Load configuration from YAML file
-def load_config(config_path: str):
-    """
-    Load configuration from a YAML file.
-
-    :param config_path: Path to the YAML configuration file.
-    :return: Configuration dictionary.
-    """
-    try:
-        with open(config_path, "r") as config_file:
-            return yaml.safe_load(config_file)
-    except FileNotFoundError:
-        logging.error(f"Configuration file not found: {config_path}")
-        raise
-    except yaml.YAMLError as e:
-        logging.error(f"Error parsing configuration file: {e}")
-        raise
+from run_all_summarizers import summarize_all, load_config, save_summaries
 
 # Initialise logging
 def initialise_logging(debug_mode: bool):
@@ -79,9 +62,9 @@ def main():
     workers = config.get("workers", 4)
 
     summarizer_scripts = [
-        "t5_summarizer.py",
-        "bart_summarizer.py",
-        "bert_summarizer.py",
+        "models/t5_summarizer.py",
+        "models/bart_summarizer.py",
+        "models/bert_summarizer.py",
     ]
 
     # Ensure output directory exists
@@ -101,6 +84,29 @@ def main():
                 logging.info(f"Completed: {script_name}")
             except Exception as exc:
                 logging.error(f"{script_name} generated an exception: {exc}")
+
+    # Example usage
+    def load_incidents(file_path):
+        """
+        Load incidents from a JSON file.
+
+        :param file_path: Path to the JSON file containing incidents.
+        :return: List of incidents.
+        """
+        try:
+            with open(file_path, 'r') as file:
+                incidents = json.load(file)
+            return incidents
+        except Exception as e:
+            logging.error(f"Error loading incidents from {file_path}: {e}")
+            return []
+
+    incidents = load_incidents("path_to_incidents.json")
+    summaries = summarize_all(incidents, config)
+    save_summaries(summaries, "output/summaries.json")
+
+    # Call the evaluation function
+    evaluate_main(max_incidents=max_incidents, evaluation_options=config.get("evaluation_options", {}))
 
 if __name__ == "__main__":
     main()
