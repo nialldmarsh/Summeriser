@@ -2,10 +2,12 @@ import logging
 import subprocess
 import os
 import yaml
-import json  # Add this import if not present
+import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from evaluate import evaluate_main
-from run_all_summarizers import summarize
+from models.t5_summarizer import T5Summarizer
+from models.bart_summarizer import BartSummarizer
+from models.bert_summarizer import BertSummarizer
 
 # Load configuration from YAML file
 with open("config.yml", "r") as config_file:
@@ -32,6 +34,25 @@ def run_summarizer(script_name: str, max_incidents: int, workers: int):
     else:
         logging.error(f"Error running {script_name}: {result.stderr}")
 
+def summarize(text):
+    """
+    Summarize the given text using all configured summarizers.
+    
+    :param text: The text to summarize.
+    :return: A dictionary with summarizer names as keys and their summaries as values.
+    """
+    summaries = {}
+    if config["summarizers"]["t5"]:
+        t5_summarizer = T5Summarizer()
+        summaries["t5"] = t5_summarizer.summarize(text)
+    if config["summarizers"]["bart"]:
+        bart_summarizer = BartSummarizer()
+        summaries["bart"] = bart_summarizer.summarize(text)
+    if config["summarizers"]["bert"]:
+        bert_summarizer = BertSummarizer()
+        summaries["bert"] = bert_summarizer.summarize(text)
+    return summaries
+
 def main():
     """
     Main function to run all summarizers and evaluate the results.
@@ -41,11 +62,11 @@ def main():
     evaluation_options = config.get("evaluation_options", {})
     summarizer_scripts = []
     if config["summarizers"]["t5"]:
-        summarizer_scripts.append("t5_summarizer.py")
+        summarizer_scripts.append("models/t5_summarizer.py")
     if config["summarizers"]["bart"]:
-        summarizer_scripts.append("bart_summarizer.py")
+        summarizer_scripts.append("models/bart_summarizer.py")
     if config["summarizers"]["bert"]:
-        summarizer_scripts.append("bert_summarizer.py")
+        summarizer_scripts.append("models/bert_summarizer.py")
 
     workers_per_summarizer = max(1, total_workers // len(summarizer_scripts)) if summarizer_scripts else 1
 

@@ -80,12 +80,12 @@
     "HumanFleschReadingEase": 46.78,
     "HumanFleschKincaidGrade": 10.7,
     "HumanGunningFogIndex": 12.65,
-    "T5Duration": 45926.4612197876,
-    "BARTDuration": 40545.10021209717,
-    "BERTDuration": 7376.781702041626,
-    "t5_timestamp": "2025-01-19T19:49:51.292298",
-    "bart_timestamp": "2025-01-19T19:49:45.679026",
-    "bert_timestamp": "2025-01-19T19:49:17.021346"
+    "T5Duration": 64388.036251068115,
+    "BARTDuration": 56048.41709136963,
+    "BERTDuration": 11953.612804412842,
+    "t5_timestamp": "2025-01-19T20:20:18.129768",
+    "bart_timestamp": "2025-01-19T20:20:10.268664",
+    "bert_timestamp": "2025-01-19T20:19:32.537930"
   },
   {
     "GUID": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
@@ -168,12 +168,12 @@
     "HumanFleschReadingEase": 20.38,
     "HumanFleschKincaidGrade": 14.6,
     "HumanGunningFogIndex": 16.21,
-    "T5Duration": 45518.73993873596,
-    "BARTDuration": 42244.693994522095,
-    "BERTDuration": 6574.508190155029,
-    "t5_timestamp": "2025-01-19T19:49:50.916573",
-    "bart_timestamp": "2025-01-19T19:49:47.388051",
-    "bert_timestamp": "2025-01-19T19:49:16.231954"
+    "T5Duration": 63932.02018737793,
+    "BARTDuration": 57919.809341430664,
+    "BERTDuration": 10710.489988327026,
+    "t5_timestamp": "2025-01-19T20:20:17.681752",
+    "bart_timestamp": "2025-01-19T20:20:12.169057",
+    "bert_timestamp": "2025-01-19T20:19:31.314808"
   },
   {
     "GUID": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
@@ -256,11 +256,11 @@
     "HumanFleschReadingEase": 36.49,
     "HumanFleschKincaidGrade": 12.6,
     "HumanGunningFogIndex": 13.88,
-    "T5Duration": 44924.83878135681,
-    "BARTDuration": 38048.46549034119,
-    "BERTDuration": 6489.986419677734,
-    "t5_timestamp": "2025-01-19T19:49:50.326671",
-    "bart_timestamp": "2025-01-19T19:49:43.194822",
-    "bert_timestamp": "2025-01-19T19:49:16.155430"
+    "T5Duration": 62994.08578872681,
+    "BARTDuration": 53239.4917011261,
+    "BERTDuration": 10607.553482055664,
+    "t5_timestamp": "2025-01-19T20:20:16.752817",
+    "bart_timestamp": "2025-01-19T20:20:07.491741",
+    "bert_timestamp": "2025-01-19T20:19:31.249874"
   }
 ]
