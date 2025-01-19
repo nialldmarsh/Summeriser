@@ -8,9 +8,9 @@ Welcome to the Summarizer Metrics project! This repository is dedicated to evalu
 
 We have implemented three summarization models:
 
-- **T5Summarizer**: Utilizes the T5 model for generating summaries.
-- **BartSummarizer**: Employs the BART model for summarization tasks.
-- **BertSummarizer**: Uses BERT for understanding and generating concise summaries.
+- **T5Summarizer**: Utilizes the T5 model for generating summaries. [Official Documentation](https://huggingface.co/transformers/model_doc/t5.html)
+- **BartSummarizer**: Employs the BART model for summarization tasks. [Official Documentation](https://huggingface.co/transformers/model_doc/bart.html)
+- **BertSummarizer**: Uses BERT for understanding and generating concise summaries. [Official Documentation](https://huggingface.co/transformers/model_doc/bert.html)
 
 ## Model Summarization
 
@@ -135,6 +135,8 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
    - **Calculation**: `len(summary) / len(reference)`
    - **Purpose**: Measures how much of the incident information is captured in the summary.
    - **Range**: 0.0 to ∞
+   - **Caveats**: May not account for the quality of the captured information.
+   - **Industry Benchmarks**: Scores close to 1.0 are considered good.
 
 2. **Precision, Recall, F1 Score**
    - **Precision**: `common_tokens / summary_tokens`
@@ -142,16 +144,22 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
    - **F1 Score**: `2 * (precision * recall) / (precision + recall)`
    - **Purpose**: Evaluates the accuracy and coverage of the summary compared to the original incident.
    - **Range**: 0.0 to 1.0 (higher is better)
+   - **Caveats**: Sensitive to the length of the summary and reference.
+   - **Industry Benchmarks**: Values above 0.7 are considered strong.
 
 ### Quality Comparison Metrics (Against Human Summary)
 
 1. **Cosine Similarity**
    - **Calculation**: Using TF-IDF vectorization to compare semantic similarity.
    - **Range**: -1.0 to 1.0 (1.0 indicates identical content)
+   - **Caveats**: May not capture nuanced differences in meaning.
+   - **Industry Benchmarks**: Scores above 0.6 suggest high similarity.
 
 2. **BLEU Score**
    - **Calculation**: Measures n-gram precision between the summary and human reference.
    - **Range**: 0.0 to 1.0 (higher means better match)
+   - **Caveats**: May not fully capture semantic similarity.
+   - **Industry Benchmarks**: Scores above 0.6 are considered good.
 
 ### Human Comparison Metrics
 
@@ -159,10 +167,12 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
    - **Calculation**: `len(human_summary) / len(summary)`
    - **Purpose**: Compares the length ratios between human and AI-generated summaries.
    - **Range**: 0.0 to ∞
+   - **Caveats**: Length does not always equate to quality.
 
 2. **HumanPrecision, HumanRecall**
    - **Calculation**: Token-based comparison between human and AI summaries.
    - **Range**: 0.0 to 1.0
+   - **Caveats**: Sensitive to tokenization and summary length.
 
 ### Readability Metrics
 
@@ -172,6 +182,8 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
 
    - **Purpose**: Assess the readability and complexity of the summaries.
    - **Range**: Higher scores generally indicate easier readability.
+   - **Caveats**: May not fully capture the clarity of technical content.
+   - **Industry Benchmarks**: Balanced scores indicating clarity without oversimplification.
 
 ### Summarizer Duration Metrics
 
@@ -204,3 +216,29 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
   - **Duration Metrics**: Higher durations may indicate inefficiency in summarization processes.
 
 Regularly monitoring these metrics helps in refining the summarization models and ensuring the generated summaries meet the desired quality and performance standards.
+
+## Project Structure and File Functions
+
+```
+Summarizer/
+├── config.yml                # Configuration file for setting parameters
+├── main.py                   # Main script to run summarization and evaluation
+├── models/
+│   ├── t5_summarizer.py      # T5 summarizer implementation
+│   ├── bart_summarizer.py    # BART summarizer implementation
+│   ├── bert_summarizer.py    # BERT summarizer implementation
+├── utils/
+│   ├── data_loader.py        # Functions for loading and processing input data
+│   ├── metrics.py            # Functions for calculating evaluation metrics
+│   ├── logger.py             # Logging setup and utilities
+├── requirements.txt          # List of dependencies
+└── output/
+    ├── metrics_output.json   # Output file for evaluation metrics
+```
+
+- **config.yml**: Manages project settings and parameters.
+- **main.py**: Executes the summarization and evaluation process.
+- **models/**: Contains implementations of the T5, BART, and BERT summarizers.
+- **utils/**: Includes utility functions for data loading, metric calculations, and logging.
+- **requirements.txt**: Lists all dependencies required for the project.
+- **output/**: Directory for storing output metrics and results.
