@@ -125,6 +125,18 @@ def main():
 if __name__ == "__main__":
     # Example usage
     # Load incidents from a file or another source
+    def load_incidents(file_path):
+        """
+        Load incidents from a JSON file.
+        
+        :param file_path: Path to the JSON file containing incidents.
+        :return: List of incidents.
+        """
+        import json
+        with open(file_path, 'r') as file:
+            incidents = json.load(file)
+        return incidents
+
     incidents = load_incidents("path_to_incidents.json")
     config = load_config("config.yml")
     summaries = summarize_all(incidents, config)
