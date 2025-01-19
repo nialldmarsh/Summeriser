@@ -10,97 +10,97 @@ from models.bart_summarizer import BartSummarizer
 from models.bert_summarizer import BertSummarizer
 
 # Load configuration from YAML file
-with open("config.yml", "r") as config_file:
-    config = yaml.safe_load(config_file)
+def load_config(config_path: str):
+    """
+    Load configuration from a YAML file.
 
-# Initialize logging
-logging.basicConfig(level=logging.DEBUG if config["debug"] else logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    :param config_path: Path to the YAML configuration file.
+    :return: Configuration dictionary.
+    """
+    try:
+        with open(config_path, "r") as config_file:
+            return yaml.safe_load(config_file)
+    except FileNotFoundError:
+        logging.error(f"Configuration file not found: {config_path}")
+        raise
+    except yaml.YAMLError as e:
+        logging.error(f"Error parsing configuration file: {e}")
+        raise
 
+# Initialise logging
+def initialise_logging(debug_mode: bool):
+    """
+    Set up logging configuration.
+
+    :param debug_mode: Enable debug level logging if True.
+    """
+    logging.basicConfig(
+        level=logging.DEBUG if debug_mode else logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+
+# Function to activate virtual environment and run scripts
 def run_summarizer(script_name: str, max_incidents: int, workers: int):
     """
     Run a summarizer script and log progress.
-    
+
     :param script_name: The name of the summarizer script to run.
     :param max_incidents: The maximum number of incidents to process.
     :param workers: The number of workers to use for this summarizer.
     """
     logging.info(f"Running {script_name} with max_incidents={max_incidents} and workers={workers}...")
-    # Activate the virtual environment and run the script
-    activate_venv = os.path.join(".venv", "Scripts", "activate.bat")
-    command = f'cmd /c "{activate_venv} && python {script_name} {max_incidents} {workers}"'
-    result = subprocess.run(command, capture_output=True, text=True, shell=True)
-    if result.returncode == 0:
-        logging.info(f"{script_name} ran successfully.")
-    else:
-        logging.error(f"Error running {script_name}: {result.stderr}")
 
-def summarize(text):
-    """
-    Summarize the given text using all configured summarizers.
-    
-    :param text: The text to summarize.
-    :return: A dictionary with summarizer names as keys and their summaries as values.
-    """
-    summaries = {}
-    if config["summarizers"]["t5"]:
-        t5_summarizer = T5Summarizer()
-        summaries["t5"] = t5_summarizer.summarize(text)
-    if config["summarizers"]["bart"]:
-        bart_summarizer = BartSummarizer()
-        summaries["bart"] = bart_summarizer.summarize(text)
-    if config["summarizers"]["bert"]:
-        bert_summarizer = BertSummarizer()
-        summaries["bert"] = bert_summarizer.summarize(text)
-    return summaries
+    # Determine platform-specific virtual environment activation
+    activate_venv = (
+        os.path.join(".venv", "Scripts", "activate.bat")
+        if os.name == "nt" else "source .venv/bin/activate"
+    )
 
+    command = f'{activate_venv} && python {script_name} {max_incidents} {workers}'
+
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, shell=True)
+        if result.returncode == 0:
+            logging.info(f"{script_name} ran successfully.")
+        else:
+            logging.error(f"Error running {script_name}: {result.stderr.strip()}")
+    except Exception as e:
+        logging.error(f"Failed to execute {script_name}: {e}")
+
+# Main workflow
 def main():
     """
-    Main function to run all summarizers and evaluate the results.
+    Main entry point for the summarisation workflow.
     """
+    config = load_config("config.yml")
+    initialise_logging(config.get("debug", False))
+
     max_incidents = config.get("max_incidents", 100)
-    total_workers = config.get("concurrent_tasks", 20)
-    evaluation_options = config.get("evaluation_options", {})
-    summarizer_scripts = []
-    if config["summarizers"]["t5"]:
-        summarizer_scripts.append("models/t5_summarizer.py")
-    if config["summarizers"]["bart"]:
-        summarizer_scripts.append("models/bart_summarizer.py")
-    if config["summarizers"]["bert"]:
-        summarizer_scripts.append("models/bert_summarizer.py")
+    workers = config.get("workers", 4)
 
-    workers_per_summarizer = max(1, total_workers // len(summarizer_scripts)) if summarizer_scripts else 1
+    summarizer_scripts = [
+        "t5_summarizer.py",
+        "bart_summarizer.py",
+        "bert_summarizer.py",
+    ]
 
-    # Use ThreadPoolExecutor to run summarizers in parallel
+    # Ensure output directory exists
+    output_dir = "output"
+    os.makedirs(output_dir, exist_ok=True)
+
     with ThreadPoolExecutor(max_workers=len(summarizer_scripts)) as executor:
-        futures = [executor.submit(run_summarizer, script, max_incidents, workers_per_summarizer) for script in summarizer_scripts]
-        for future in as_completed(futures):
+        future_to_script = {
+            executor.submit(run_summarizer, script, max_incidents, workers): script
+            for script in summarizer_scripts
+        }
+
+        for future in as_completed(future_to_script):
+            script_name = future_to_script[future]
             try:
                 future.result()
-            except Exception as e:
-                logging.error(f"Error in summarizer execution: {e}")
-
-    # Summarization and duration logging
-    sample_text = "Your incident report text goes here."
-    results = summarize(sample_text)
-    logging.info(f"Summarization Results: {results}")
-    
-    # Include durations in the results
-    metrics_output = {
-        "summaries": results,
-        # ...other metrics...
-    }
-    
-    # Write metrics to JSON
-    os.makedirs("output", exist_ok=True)
-    with open("output/metrics_output.json", "w") as outfile:
-        json.dump(metrics_output, outfile, indent=4)
-
-    if config["evaluate"]:
-        logging.info("Running evaluation...")
-        evaluate_main(max_incidents, evaluation_options)
-        logging.info("Evaluation completed.")
+                logging.info(f"Completed: {script_name}")
+            except Exception as exc:
+                logging.error(f"{script_name} generated an exception: {exc}")
 
 if __name__ == "__main__":
-    logging.info("Starting evaluation process...")
     main()
-    logging.info("Evaluation process completed.")
