@@ -2,8 +2,10 @@ import logging
 import subprocess
 import os
 import yaml
+import json  # Add this import if not present
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from evaluate import evaluate_main
+from run_all_summarizers import summarize
 
 # Load configuration from YAML file
 with open("config.yml", "r") as config_file:
@@ -45,15 +47,32 @@ def main():
     if config["summarizers"]["bert"]:
         summarizer_scripts.append("bert_summarizer.py")
 
-    workers_per_summarizer = max(1, total_workers // len(summarizer_scripts))
+    workers_per_summarizer = max(1, total_workers // len(summarizer_scripts)) if summarizer_scripts else 1
 
+    # Use ThreadPoolExecutor to run summarizers in parallel
     with ThreadPoolExecutor(max_workers=len(summarizer_scripts)) as executor:
         futures = [executor.submit(run_summarizer, script, max_incidents, workers_per_summarizer) for script in summarizer_scripts]
         for future in as_completed(futures):
             try:
                 future.result()
             except Exception as e:
-                logging.error(f"Error in future: {e}")
+                logging.error(f"Error in summarizer execution: {e}")
+
+    # Summarization and duration logging
+    sample_text = "Your incident report text goes here."
+    results = summarize(sample_text)
+    logging.info(f"Summarization Results: {results}")
+    
+    # Include durations in the results
+    metrics_output = {
+        "summaries": results,
+        # ...other metrics...
+    }
+    
+    # Write metrics to JSON
+    os.makedirs("output", exist_ok=True)
+    with open("output/metrics_output.json", "w") as outfile:
+        json.dump(metrics_output, outfile, indent=4)
 
     if config["evaluate"]:
         logging.info("Running evaluation...")

@@ -1,10 +1,17 @@
 import logging
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from summarizers import T5Summarizer, BartSummarizer, BertSummarizer
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Initialize summarizers
+t5 = T5Summarizer()
+bart = BartSummarizer()
+bert = BertSummarizer()
 
 def run_script(script_name: str, max_records: int = None):
     """
@@ -23,6 +30,83 @@ def run_script(script_name: str, max_records: int = None):
     except subprocess.CalledProcessError as e:
         logging.error(f"Error running script {script_name}: {e.stderr}")
 
+def summarize_incident(summarizer, incident):
+    """
+    Summarize a single incident using the specified summarizer.
+    
+    :param summarizer: The summarizer function to use (t5.summarize, bart.summarize, bert.summarize).
+    :param incident: The incident data to summarize.
+    :return: Summary and duration in milliseconds.
+    """
+    start_time = time.time()
+    summary = summarizer(incident)
+    duration = (time.time() - start_time) * 1000  # Duration in milliseconds
+    return summary, duration
+
+def summarize_all(incidents, config):
+    """
+    Summarize all incidents using the enabled summarizers in parallel.
+    
+    :param incidents: List of incident data.
+    :param config: Configuration dictionary.
+    :return: Dictionary of summaries with durations.
+    """
+    summaries = {
+        't5': {},
+        'bart': {},
+        'bert': {}
+    }
+    
+    summarizers = {
+        't5': t5.summarize,
+        'bart': bart.summarize,
+        'bert': bert.summarize
+    }
+    
+    max_workers = config.get('incident_workers', 5)  # Default to 5 workers if not specified
+    
+    for key, summarizer in summarizers.items():
+        if config['summarizers'].get(key, False):
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                future_to_guid = {executor.submit(summarize_incident, summarizer, incident): incident['guid'] for incident in incidents}
+                for future in as_completed(future_to_guid):
+                    guid = future_to_guid[future]
+                    try:
+                        summary, duration = future.result()
+                        summaries[key][guid] = {
+                            'summary': summary,
+                            'duration_ms': duration
+                        }
+                    except Exception as e:
+                        logging.error(f"Error summarizing incident {guid} with {key}: {e}")
+                        summaries[key][guid] = {
+                            'summary': "",
+                            'duration_ms': 0
+                        }
+    return summaries
+
+def summarize(text: str) -> dict:
+    """
+    Summarize the input text using all available summarizers.
+    
+    :param text: The text to be summarized.
+    :return: A dictionary with summaries from each summarizer.
+    """
+    summaries = {}
+    start_time = time.time()
+    summaries['t5'] = t5.summarize(text)
+    summaries['t5_duration'] = (time.time() - start_time) * 1000  # Duration in milliseconds
+    
+    start_time = time.time()
+    summaries['bart'] = bart.summarize(text)
+    summaries['bart_duration'] = (time.time() - start_time) * 1000  # Duration in milliseconds
+    
+    start_time = time.time()
+    summaries['bert'] = bert.summarize(text)
+    summaries['bert_duration'] = (time.time() - start_time) * 1000  # Duration in milliseconds
+    
+    return summaries
+
 def main():
     """
     Main function to run all summarizer scripts in parallel.
@@ -39,4 +123,10 @@ def main():
                 logging.error(f"Error in future: {e}")
 
 if __name__ == "__main__":
+    # Example usage
+    # Load incidents from a file or another source
+    incidents = load_incidents("path_to_incidents.json")
+    config = load_config("config.yml")
+    summaries = summarize_all(incidents, config)
+    save_summaries(summaries, "output/summaries.json")
     main()

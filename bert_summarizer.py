@@ -6,6 +6,7 @@ import yaml
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from summarizer import Summarizer
 from utils import extract_incident_text, load_incidents
+from datetime import datetime
 import transformers
 
 # Load configuration from YAML file
@@ -30,40 +31,45 @@ def summarize_incident(incident):
     logging.debug(f"Prompt for BERT summarization: {incident_text}")
     start_time = time.time()
     bert_summary = model(incident_text, min_length=60, max_length=150)
-    end_time = time.time()
-    logging.info(f"BERT summarization for GUID {guid} took {end_time - start_time:.2f} seconds.")
+    duration = (time.time() - start_time) * 1000  # Duration in milliseconds
+    timestamp = datetime.now().isoformat()
+    logging.info(f"BERT summarization for GUID {guid} took {duration:.2f} milliseconds.")
     logging.debug(f"BERT summary: {bert_summary}")
-    return guid, bert_summary
+    return {
+        "guid": guid,
+        "summary": bert_summary,
+        "duration_ms": duration,
+        "timestamp": timestamp
+    }
 
-def process_incidents(filepath: str, max_incidents: int = 5, workers: int = 20) -> dict:
+def process_incidents(filepath: str, max_incidents: int = 5, workers: int = 20) -> list:
     """
     Process the incidents and generate BERT summaries.
     
     :param filepath: Path to the JSON file containing incident data.
     :param max_incidents: Maximum number of incidents to process for testing.
     :param workers: Number of concurrent workers to use.
-    :return: A dictionary with GUIDs and their respective BERT summaries.
+    :return: A list of dictionaries with GUIDs, summaries, durations, and timestamps.
     """
     incidents = load_incidents(filepath, max_incidents)
     
-    bert_summaries = {}
+    bert_summaries = []
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = [executor.submit(summarize_incident, incident) for incident in incidents]
         for future in as_completed(futures):
             try:
-                guid, bert_summary = future.result()
-                bert_summaries[guid] = bert_summary
+                bert_summaries.append(future.result())
             except Exception as e:
                 logging.error(f"Error in future: {e}")
     
     logging.info("Generated BERT summaries for all incidents.")
     return bert_summaries
 
-def save_bert_summaries(bert_summaries: dict, output_filepath: str):
+def save_bert_summaries(bert_summaries: list, output_filepath: str):
     """
     Save the BERT summaries to a JSON file.
     
-    :param bert_summaries: A dictionary with GUIDs and their respective BERT summaries.
+    :param bert_summaries: A list of dictionaries with GUIDs, summaries, durations, and timestamps.
     :param output_filepath: Path to the output JSON file.
     """
     try:

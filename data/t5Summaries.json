@@ -1,5 +1,20 @@
-{
-  "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b": "True story: dashboard remained blank and data points never loaded when applying new filters . Identified Risks: - Delayed financial reporting to management if data is not visible . Incident ID: INC-3003 Reported by: Daniel Green from Finance System: Financial Analytics Dashboard Incident ID: INC-3003 Resolved Resolution Type: Vendor Patch Rollback Identified Risks: - Delayed financial reporting to management if data is not visible .",
-  "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b": "True Story: Incident ID: INC-3002 Administrators identified the offline service handling auto-posting and manually restarted it . Subsequent invoices posted correctly, resolving the backlog. Resolution Type: Administrators Additional Notes: Finance team verified pending invoices were reconciled within the same day . True Story: Incident ID: INC-3002 Administrators identified the offline service handling auto-posting and manually restarted it. Subsequent invoices posted correctly.",
-  "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a": "Expense Claim Portal: Expense Claim Portal Incident ID: INC-3001 Reported by: Alice Brown from Finance System: Expense Claim Portal What Went Wrong: Receipts failed to upload, and the portal displayed a timeout error after the second attachment . Identified Risks: - Delayed reimbursement cycle - Possible duplication of claims if employees retry submissions. Proactive: Increase server file size limits and add more detailed error feedback for large"
-}
+[
+  {
+    "guid": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "True story: dashboard remained blank and data points never loaded when applying new filters . Identified Risks: - Delayed financial reporting to management if data is not visible . Incident ID: INC-3003 Reported by: Daniel Green from Finance System: Financial Analytics Dashboard Incident ID: INC-3003 Resolved Resolution Type: Vendor Patch Rollback Identified Risks: - Delayed financial reporting to management if data is not visible .",
+    "duration_ms": 44924.83878135681,
+    "timestamp": "2025-01-19T19:49:50.326671"
+  },
+  {
+    "guid": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "True Story: Incident ID: INC-3002 Administrators identified the offline service handling auto-posting and manually restarted it . Subsequent invoices posted correctly, resolving the backlog. Resolution Type: Administrators Additional Notes: Finance team verified pending invoices were reconciled within the same day . True Story: Incident ID: INC-3002 Administrators identified the offline service handling auto-posting and manually restarted it. Subsequent invoices posted correctly.",
+    "duration_ms": 45518.73993873596,
+    "timestamp": "2025-01-19T19:49:50.916573"
+  },
+  {
+    "guid": "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a",
+    "summary": "Expense Claim Portal: Expense Claim Portal Incident ID: INC-3001 Reported by: Alice Brown from Finance System: Expense Claim Portal What Went Wrong: Receipts failed to upload, and the portal displayed a timeout error after the second attachment . Identified Risks: - Delayed reimbursement cycle - Possible duplication of claims if employees retry submissions. Proactive: Increase server file size limits and add more detailed error feedback for large",
+    "duration_ms": 45926.4612197876,
+    "timestamp": "2025-01-19T19:49:51.292298"
+  }
+]

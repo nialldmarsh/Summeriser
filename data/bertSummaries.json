@@ -1,5 +1,20 @@
-{
-  "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b": "What Were You Doing: Attempting to drill down on cost centre metrics for Q2 financial analysis. Proactive: Test vendor patches in a sandbox environment before live deployment.",
-  "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b": "What Were You Doing: Reviewing incoming supplier invoices that should have posted automatically. Resolution Details: Administrators identified the offline service and manually restarted it.",
-  "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a": "What Were You Doing: Submitting multiple receipts from a client visit for reimbursement. Resolution Details: IT raised the maximum allowable attachment size on the portal."
-}
+[
+  {
+    "guid": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Attempting to drill down on cost centre metrics for Q2 financial analysis. Proactive: Test vendor patches in a sandbox environment before live deployment.",
+    "duration_ms": 6489.986419677734,
+    "timestamp": "2025-01-19T19:49:16.155430"
+  },
+  {
+    "guid": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Reviewing incoming supplier invoices that should have posted automatically. Resolution Details: Administrators identified the offline service and manually restarted it.",
+    "duration_ms": 6574.508190155029,
+    "timestamp": "2025-01-19T19:49:16.231954"
+  },
+  {
+    "guid": "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a",
+    "summary": "What Were You Doing: Submitting multiple receipts from a client visit for reimbursement. Resolution Details: IT raised the maximum allowable attachment size on the portal.",
+    "duration_ms": 7376.781702041626,
+    "timestamp": "2025-01-19T19:49:17.021346"
+  }
+]

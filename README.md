@@ -4,6 +4,14 @@
 
 Welcome to the Summarizer Metrics project! This repository is dedicated to evaluating AI-generated summaries against incident data and human-written summaries using various metrics. The goal is to ensure the quality, completeness, and reliability of automated summarization tools in processing and presenting critical information.
 
+## Summarizer Modules
+
+We have implemented three summarization models:
+
+- **T5Summarizer**: Utilizes the T5 model for generating summaries.
+- **BartSummarizer**: Employs the BART model for summarization tasks.
+- **BertSummarizer**: Uses BERT for understanding and generating concise summaries.
+
 ## Model Summarization
 
 We utilize advanced natural language processing models to generate concise and accurate summaries of incident reports. The primary models employed include:
@@ -64,6 +72,7 @@ The `config.yml` file manages the project's settings, allowing customization of 
 - **evaluate**: Determines whether to perform evaluation after summarization.
 - **evaluation_options**: Specifies which metrics to compute (bleu, rouge, bertscore, readability, bert).
 - **prompts**: Defines the prompt used for generating detailed summaries.
+- **duration_tracking**: Enables tracking of summarizer execution durations.
 
 Example:
 ```yaml
@@ -83,6 +92,15 @@ evaluation_options:
   bert: true
 prompts:
   detailed: "Provide a concise (up to 200 words)..."
+duration_tracking: true
+```
+
+## Requirements
+
+Ensure all dependencies are installed by running:
+
+```bash
+pip install -r requirements.txt
 ```
 
 ## Running the Scripts
@@ -96,7 +114,7 @@ To execute the summarization and evaluation process, follow these steps:
    ```
 
 2. **Configure Settings**:
-   Adjust the `config.yml` file as needed to set parameters like the number of incidents, selected summarizers, and evaluation metrics.
+   Adjust the `config.yml` file as needed to set parameters like the number of incidents, selected summarizers, evaluation metrics, and enable duration tracking.
 
 3. **Run the Summarization Process**:
    Execute the main script to start summarizing incidents and evaluating the results:
@@ -105,7 +123,7 @@ To execute the summarization and evaluation process, follow these steps:
    ```
 
 4. **Output Metrics**:
-   The metrics will be saved in `output/metrics_output.json` and analyzed for insights.
+   The metrics, including summarizer durations, will be saved in `output/metrics_output.json` and analyzed for insights.
 
 ## Output Metrics
 
@@ -155,6 +173,20 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
    - **Purpose**: Assess the readability and complexity of the summaries.
    - **Range**: Higher scores generally indicate easier readability.
 
+### Summarizer Duration Metrics
+
+1. **T5 Duration**
+   - **Purpose**: Time taken by the T5 summarizer to generate a summary.
+   - **Range**: Measured in seconds.
+
+2. **BART Duration**
+   - **Purpose**: Time taken by the BART summarizer to generate a summary.
+   - **Range**: Measured in seconds.
+
+3. **BERT Duration**
+   - **Purpose**: Time taken by the BERT summarizer to generate a summary.
+   - **Range**: Measured in seconds.
+
 ## Understanding Scores
 
 - **Good Scores**:
@@ -162,11 +194,13 @@ The system generates a comprehensive set of metrics to evaluate the quality and 
   - **Precision, Recall, F1**: Values above 0.7 are considered strong, demonstrating accurate and comprehensive summaries.
   - **Cosine Similarity, BLEU Score**: Scores above 0.6 suggest high similarity to human-written summaries.
   - **Readability Metrics**: Balanced scores indicating clarity without oversimplification.
+  - **Duration Metrics**: Lower durations indicate more efficient summarization.
 
 - **Bad Scores**:
   - **Completeness Score**: Below 0.5, showing insufficient coverage of incident information.
   - **Precision, Recall, F1**: Values below 0.5 indicate poor summary quality.
   - **Cosine Similarity, BLEU Score**: Scores below 0.3 reflect low alignment with human references.
   - **Readability Metrics**: Extremely high or low scores may suggest either oversimplification or excessive complexity.
+  - **Duration Metrics**: Higher durations may indicate inefficiency in summarization processes.
 
-Regularly monitoring these metrics helps in refining the summarization models and ensuring the generated summaries meet the desired quality standards.
+Regularly monitoring these metrics helps in refining the summarization models and ensuring the generated summaries meet the desired quality and performance standards.

@@ -28,3 +28,9 @@ wheel
 # (Optional) For advanced usage, parallel processing, or other tools:
 # joblib
 # spaCy
+
+# Text statistics
+# Additional requirements
+textstat
+
+textstat

@@ -233,18 +233,18 @@ def load_t5_summaries(filepath: str) -> dict:
         return {}
 
 
-def load_summaries(filepath: str) -> dict:
+def load_summaries(filepath: str) -> list:
     """
     Load summaries from a JSON file.
     """
     try:
-        with open(filepath, 'r', encoding='utf-8') as file:  # Fixed unmatched parenthesis
+        with open(filepath, 'r', encoding='utf-8') as file:
             summaries = json.load(file)
         logging.info(f"Loaded summaries from {filepath}")
         return summaries
     except Exception as e:
         logging.error(f"Error loading summaries from {filepath}: {e}")
-        return {}
+        return []
 
 
 def load_metrics(filepath: str) -> List[Dict]:
@@ -305,7 +305,8 @@ def compute_all_metrics_for_incident(
     bert_summary: str,
     incident_fields: str,
     do_preprocess: bool,
-    skip_bertscore: bool
+    skip_bertscore: bool,
+    durations: dict
 ) -> Dict[str, float]:
     """
     Compute all summarisation metrics (including ROUGE) for a single incident.
@@ -432,20 +433,23 @@ def compute_all_metrics_for_incident(
         "HumanF1Score": human_f1,
         "HumanFleschReadingEase": human_readability["FleschReadingEase"],
         "HumanFleschKincaidGrade": human_readability["FleschKincaidGrade"],
-        "HumanGunningFogIndex": human_readability["GunningFogIndex"]
+        "HumanGunningFogIndex": human_readability["GunningFogIndex"],
+        "T5Duration": durations.get('t5_duration', 0),
+        "BARTDuration": durations.get('bart_duration', 0),
+        "BERTDuration": durations.get('bert_duration', 0)
     }
 
 
-def process_incidents(json_str: str, builder_summaries: dict, t5_summaries: dict, bart_summaries: dict, bert_summaries: dict, do_preprocess: bool = False, skip_bertscore: bool = False, total_count: int = None) -> str:
+def process_incidents(json_str: str, builder_summaries: dict, t5_summaries: list, bart_summaries: list, bert_summaries: list, do_preprocess: bool = False, skip_bertscore: bool = False, total_count: int = None) -> str:
     """
     Process the incidents, computing various metrics comparing builder summaries,
     T5 summaries, BART summaries, BERT summaries, and human summaries to the incident fields.
     
     :param json_str: String containing JSON data for incidents.
     :param builder_summaries: A dictionary mapping guids to builder summaries.
-    :param t5_summaries: A dictionary mapping guids to T5 summaries.
-    :param bart_summaries: A dictionary mapping guids to BART summaries.
-    :param bert_summaries: A dictionary mapping guids to BERT summaries.
+    :param t5_summaries: A list of dictionaries with T5 summaries.
+    :param bart_summaries: A list of dictionaries with BART summaries.
+    :param bert_summaries: A list of dictionaries with BERT summaries.
     :param do_preprocess: Whether to apply text preprocessing to all summaries and fields.
     :param skip_bertscore: Whether to skip BERTScore computation.
     :param total_count: Total number of incidents to process.
@@ -459,9 +463,9 @@ def process_incidents(json_str: str, builder_summaries: dict, t5_summaries: dict
         results = []
 
         logging.debug(f"Available builder summary GUIDs: {list(builder_summaries.keys())}")
-        logging.debug(f"Available T5 summary GUIDs: {list(t5_summaries.keys())}")
-        logging.debug(f"Available BART summary GUIDs: {list(bart_summaries.keys())}")
-        logging.debug(f"Available BERT summary GUIDs: {list(bert_summaries.keys())}")
+        logging.debug(f"Available T5 summary GUIDs: {[summary['guid'] for summary in t5_summaries]}")
+        logging.debug(f"Available BART summary GUIDs: {[summary['guid'] for summary in bart_summaries]}")
+        logging.debug(f"Available BERT summary GUIDs: {[summary['guid'] for summary in bert_summaries]}")
 
         for i, inc in enumerate(incidents):
             if total_count and i >= total_count:
@@ -469,9 +473,9 @@ def process_incidents(json_str: str, builder_summaries: dict, t5_summaries: dict
             guid = inc.get("guid")
             builder = builder_summaries.get(guid, "")
             human = inc.get("HumanSummary", "")
-            t5 = t5_summaries.get(guid, "")
-            bart = bart_summaries.get(guid, "")
-            bert = bert_summaries.get(guid, "")
+            t5_summary = next((summary for summary in t5_summaries if summary['guid'] == guid), {})
+            bart_summary = next((summary for summary in bart_summaries if summary['guid'] == guid), {})
+            bert_summary = next((summary for summary in bert_summaries if summary['guid'] == guid), {})
 
             # Concatenate relevant fields
             incident_fields = " ".join(filter(None, [
@@ -484,8 +488,20 @@ def process_incidents(json_str: str, builder_summaries: dict, t5_summaries: dict
                 inc.get("ResolutionDetails", "")
             ])).strip()
 
+            # Extract durations and timestamps
+            durations = {
+                't5_duration': t5_summary.get('duration_ms', 0),
+                'bart_duration': bart_summary.get('duration_ms', 0),
+                'bert_duration': bert_summary.get('duration_ms', 0)
+            }
+            timestamps = {
+                't5_timestamp': t5_summary.get('timestamp', ''),
+                'bart_timestamp': bart_summary.get('timestamp', ''),
+                'bert_timestamp': bert_summary.get('timestamp', '')
+            }
+
             # Compute all metrics
-            metrics = compute_all_metrics_for_incident(builder, human, t5, bart, bert, incident_fields, do_preprocess, skip_bertscore)
+            metrics = compute_all_metrics_for_incident(builder, human, t5_summary.get('summary', ''), bart_summary.get('summary', ''), bert_summary.get('summary', ''), incident_fields, do_preprocess, skip_bertscore, durations)
 
             # Append results
             results.append({
@@ -507,10 +523,11 @@ def process_incidents(json_str: str, builder_summaries: dict, t5_summaries: dict
                 "AdditionalNotes": inc.get("AdditionalNotes"),
                 "BuilderSummary": builder,
                 "HumanSummary": human,
-                "T5Summary": t5,
-                "BARTSummary": bart,
-                "BERTSummary": bert,
-                **metrics
+                "T5Summary": t5_summary.get('summary', ''),
+                "BARTSummary": bart_summary.get('summary', ''),
+                "BERTSummary": bert_summary.get('summary', ''),
+                **metrics,
+                **timestamps
             })
 
         logging.info("Processed incidents and computed metrics.")
@@ -541,11 +558,11 @@ def main():
                         help="Path to output the computed metrics JSON.")
     parser.add_argument("--preprocess", action="store_true",
                         help="Apply tokenisation and lowercasing before computing precision and recall.")
-    parser.add_argument("--skip_bertscore", action="store_true",
+    parser.add.argument("--skip_bertscore", action="store_true",
                         help="Skip BERTScore computation.")
-    parser.add_argument("--total_count", type=int, default=None,
+    parser.add.argument("--total_count", type=int, default=None,
                         help="Total number of incidents to process.")
-    parser.add_argument("--evaluation_options", type=str, default="{}",
+    parser.add.argument("--evaluation_options", type=str, default="{}",
                         help="JSON string specifying which evaluation metrics to compute.")
     args = parser.parse_args()
 
@@ -658,6 +675,20 @@ def evaluate_main(max_incidents: int = 100, evaluation_options: dict = {}):
 
     # Analyse metrics (including ROUGE)
     analysis = analyze_metrics(metrics, evaluation_options)
+
+    # Print analysis to console
+    analysis = analyze_metrics(metrics, evaluation_options)
+    print_analysis(analysis)
+
+    # Log the analysis summary
+    logging.info("Summarization Metrics Analysis Summary:")
+    logging.info(json.dumps(analysis, indent=2))
+
+    logging.info("Evaluation script started.")
+    logging.info("Evaluation script completed.")
+
+if __name__ == "__main__":
+    main()
 
     # Print analysis to console
     print_analysis(analysis)

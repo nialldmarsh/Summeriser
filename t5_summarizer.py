@@ -5,6 +5,7 @@ import time
 import yaml
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from utils import summarize_text, extract_incident_text, load_incidents
+from datetime import datetime
 
 # Load configuration from YAML file
 with open("config.yml", "r") as config_file:
@@ -20,40 +21,45 @@ def summarize_incident(incident):
     logging.debug(f"Prompt for T5 summarization: {incident_text}")
     start_time = time.time()
     t5_summary = summarize_text(incident_text, model_name="t5")
-    end_time = time.time()
-    logging.info(f"T5 summarization for GUID {guid} took {end_time - start_time:.2f} seconds.")
+    duration = (time.time() - start_time) * 1000  # Duration in milliseconds
+    timestamp = datetime.now().isoformat()
+    logging.info(f"T5 summarization for GUID {guid} took {duration:.2f} milliseconds.")
     logging.debug(f"T5 summary: {t5_summary}")
-    return guid, t5_summary
+    return {
+        "guid": guid,
+        "summary": t5_summary,
+        "duration_ms": duration,
+        "timestamp": timestamp
+    }
 
-def process_incidents(filepath: str, max_incidents: int = 5, workers: int = 20) -> dict:
+def process_incidents(filepath: str, max_incidents: int = 5, workers: int = 20) -> list:
     """
     Process the incidents and generate T5 summaries.
     
     :param filepath: Path to the JSON file containing incident data.
     :param max_incidents: Maximum number of incidents to process for testing.
     :param workers: Number of concurrent workers to use.
-    :return: A dictionary with GUIDs and their respective T5 summaries.
+    :return: A list of dictionaries with GUIDs, summaries, durations, and timestamps.
     """
     incidents = load_incidents(filepath, max_incidents)
     
-    t5_summaries = {}
+    t5_summaries = []
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = [executor.submit(summarize_incident, incident) for incident in incidents]
         for future in as_completed(futures):
             try:
-                guid, t5_summary = future.result()
-                t5_summaries[guid] = t5_summary
+                t5_summaries.append(future.result())
             except Exception as e:
                 logging.error(f"Error in future: {e}")
     
     logging.info("Generated T5 summaries for all incidents.")
     return t5_summaries
 
-def save_t5_summaries(t5_summaries: dict, output_filepath: str):
+def save_t5_summaries(t5_summaries: list, output_filepath: str):
     """
     Save the T5 summaries to a JSON file.
     
-    :param t5_summaries: A dictionary with GUIDs and their respective T5 summaries.
+    :param t5_summaries: A list of dictionaries with GUIDs, summaries, durations, and timestamps.
     :param output_filepath: Path to the output JSON file.
     """
     try:

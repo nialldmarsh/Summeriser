@@ -79,7 +79,13 @@
     "HumanF1Score": 0.23448275862068962,
     "HumanFleschReadingEase": 46.78,
     "HumanFleschKincaidGrade": 10.7,
-    "HumanGunningFogIndex": 12.65
+    "HumanGunningFogIndex": 12.65,
+    "T5Duration": 45926.4612197876,
+    "BARTDuration": 40545.10021209717,
+    "BERTDuration": 7376.781702041626,
+    "t5_timestamp": "2025-01-19T19:49:51.292298",
+    "bart_timestamp": "2025-01-19T19:49:45.679026",
+    "bert_timestamp": "2025-01-19T19:49:17.021346"
   },
   {
     "GUID": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
@@ -161,7 +167,13 @@
     "HumanF1Score": 0.2777777777777778,
     "HumanFleschReadingEase": 20.38,
     "HumanFleschKincaidGrade": 14.6,
-    "HumanGunningFogIndex": 16.21
+    "HumanGunningFogIndex": 16.21,
+    "T5Duration": 45518.73993873596,
+    "BARTDuration": 42244.693994522095,
+    "BERTDuration": 6574.508190155029,
+    "t5_timestamp": "2025-01-19T19:49:50.916573",
+    "bart_timestamp": "2025-01-19T19:49:47.388051",
+    "bert_timestamp": "2025-01-19T19:49:16.231954"
   },
   {
     "GUID": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
@@ -243,6 +255,12 @@
     "HumanF1Score": 0.36601307189542487,
     "HumanFleschReadingEase": 36.49,
     "HumanFleschKincaidGrade": 12.6,
-    "HumanGunningFogIndex": 13.88
+    "HumanGunningFogIndex": 13.88,
+    "T5Duration": 44924.83878135681,
+    "BARTDuration": 38048.46549034119,
+    "BERTDuration": 6489.986419677734,
+    "t5_timestamp": "2025-01-19T19:49:50.326671",
+    "bart_timestamp": "2025-01-19T19:49:43.194822",
+    "bert_timestamp": "2025-01-19T19:49:16.155430"
   }
 ]
