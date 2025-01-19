@@ -1,0 +1,30 @@
+# requirements.txt
+
+# Core libraries
+numpy
+nltk
+scikit-learn
+
+# Transformers library for T5, BART, and BERT models
+transformers
+torch
+
+# For ROUGE metrics
+rouge-score
+
+# SentencePiece for T5Tokenizer
+sentencepiece
+
+# BERT Extractive Summarizer
+bert-extractive-summarizer
+
+# BERTScore
+bert-score
+
+# Build tools
+setuptools
+wheel
+
+# (Optional) For advanced usage, parallel processing, or other tools:
+# joblib
+# spaCy

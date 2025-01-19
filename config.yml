@@ -1,0 +1,16 @@
+debug: false
+max_incidents: 3
+concurrent_tasks: 20
+summarizers:
+  t5: true
+  bart: true
+  bert: true
+evaluate: true
+evaluation_options:
+  bleu: true
+  rouge: true
+  bertscore: true
+  readability: true
+  bert: true
+prompts:
+  detailed: "Provide a concise (up to 200 words) academic-style summary of this incident. Include an explanation of the risk factors (‘IdentifiedRisks’) and the rationale for the chosen mitigation (ResolutionDetails). Maintain an objective, formal tone."
