@@ -1,6 +1,6 @@
 debug: false
-max_incidents: 3
-concurrent_tasks: 20
+max_incidents: 99
+concurrent_tasks: 40
 summarizers:
   t5: true
   bart: true
