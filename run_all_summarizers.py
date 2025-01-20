@@ -148,7 +148,7 @@ def main():
     Main function to run all summarizer scripts in parallel.
     """
     max_records = int(sys.argv[1]) if len(sys.argv) > 1 else None
-    scripts = ["models/t5_summarizer.py", "models/bart_summarizer.py", "models/bert_summarizer.py"]
+    scripts = ["t5_summarizer.py", "bart_summarizer.py", "bert_summarizer.py"]
     
     with ThreadPoolExecutor() as executor:
         futures = [executor.submit(run_script, script, max_records) for script in scripts]

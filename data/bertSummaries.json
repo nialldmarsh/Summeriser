@@ -2,19 +2,61 @@
   {
     "guid": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
     "summary": "What Were You Doing: Attempting to drill down on cost centre metrics for Q2 financial analysis. Proactive: Test vendor patches in a sandbox environment before live deployment.",
-    "duration_ms": 10541.056871414185,
-    "timestamp": "2025-01-19T23:33:14.544707"
+    "duration_ms": 10211.324453353882,
+    "timestamp": "2025-01-20T10:58:07.723718"
   },
   {
     "guid": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
     "summary": "What Were You Doing: Reviewing incoming supplier invoices that should have posted automatically. Resolution Details: Administrators identified the offline service and manually restarted it.",
-    "duration_ms": 10889.806985855103,
-    "timestamp": "2025-01-19T23:33:14.876870"
+    "duration_ms": 10265.865087509155,
+    "timestamp": "2025-01-20T10:58:07.731727"
   },
   {
     "guid": "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a",
     "summary": "What Were You Doing: Submitting multiple receipts from a client visit for reimbursement. Resolution Details: IT raised the maximum allowable attachment size on the portal.",
-    "duration_ms": 12181.966781616211,
-    "timestamp": "2025-01-19T23:33:16.146851"
+    "duration_ms": 11076.900720596313,
+    "timestamp": "2025-01-20T10:58:08.511967"
+  },
+  {
+    "guid": "4c7d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Submitting multiple high-value invoices that required management sign-off. Pending approval notifications were re-sent, and managers approved the invoices promptly.",
+    "duration_ms": 11037.799835205078,
+    "timestamp": "2025-01-20T10:58:08.570193"
+  },
+  {
+    "guid": "5d8d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Generating a consolidated expense report to share with the senior finance team. Why: The export function tried to process excessive data in one go without sufficient memory management.",
+    "duration_ms": 6591.733694076538,
+    "timestamp": "2025-01-20T10:58:14.316449"
+  },
+  {
+    "guid": "6e9d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Uploading VAT and corporate tax forms for processing. How: After the fifth document, the page timed out, forcing a fresh login.",
+    "duration_ms": 6609.420299530029,
+    "timestamp": "2025-01-20T10:58:14.342144"
+  },
+  {
+    "guid": "8g1d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Running new revenue projections to present at the monthly executive meeting. Why: API token expired, preventing the forecast app from accessing updated CRM info.",
+    "duration_ms": 6530.404090881348,
+    "timestamp": "2025-01-20T10:58:15.101597"
+  },
+  {
+    "guid": "7f0d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Reviewing which invoices had cleared the bank and which were outstanding. How: On certain days, up to 20% of cleared invoices didn\u2019t reflect their paid status, prompting manual checks.",
+    "duration_ms": 6653.05757522583,
+    "timestamp": "2025-01-20T10:58:15.165024"
+  },
+  {
+    "guid": "0i3d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Checking cross-department spending to prepare a cost allocation report. Why: A missing data aggregation script, accidentally disabled during a routine maintenance window.",
+    "duration_ms": 4632.744789123535,
+    "timestamp": "2025-01-20T10:58:18.975888"
+  },
+  {
+    "guid": "9h2d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "What Were You Doing: Reviewing the mileage reimbursements for Q1 travel logs. Proactive: Synchronise policy updates with the system changes more promptly.",
+    "duration_ms": 6147.87745475769,
+    "timestamp": "2025-01-20T10:58:20.465317"
   }
 ]

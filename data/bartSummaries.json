@@ -2,19 +2,61 @@
   {
     "guid": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
     "summary": "Incident ID: INC-3003 Reported by: Daniel Green from Finance System: Financial Analytics Dashboard. Charts remained blank and data points never loaded when applying new filters. A JavaScript library dependency broke when the vendor released a patch that was incompatible with the old filter module. Mitigation: Reactive: Rolled back the vendor library to a stable version. Proactive: Test vendor patches in a sandbox environment before live deployment. Status: Resolved Resolution Type: Vendor Patch Rollback.",
-    "duration_ms": 59325.894832611084,
-    "timestamp": "2025-01-19T23:33:55.564230"
+    "duration_ms": 74022.33934402466,
+    "timestamp": "2025-01-20T10:58:56.462664"
+  },
+  {
+    "guid": "4c7d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "No email or in-app notifications triggered, so managers were unaware of pending approvals. A misconfiguration in the notification module after the system was migrated to a new SMTP server. Mitigation: Reactive: Correct the SMTP settings and re-trigger notifications. Proactive: Develop automated checks to confirm email routing post-migrations. Resolution: IT updated the workflow\u2019s SMTPserver details. Pending approval notifications were re-sent, and managers approved the invoices promptly.",
+    "duration_ms": 75458.5542678833,
+    "timestamp": "2025-01-20T10:58:57.899879"
   },
   {
     "guid": "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a",
     "summary": "Incident ID: INC-3001 Reported by: Alice Brown from Finance System: Expense Claim Portal. Receipts failed to upload, and the portal displayed a timeout error after the second attachment. Server-side upload limit was exceeded by larger-than-expected receipt file sizes. Mitigation: Reactive: Instructed user to split receipts into smaller files. Proactive: Increase server file size limits and add more detailed error feedback for large uploads. Status: Resolved Resolution Type: First Line Support.",
-    "duration_ms": 62307.79504776001,
-    "timestamp": "2025-01-19T23:33:58.497133"
+    "duration_ms": 76131.99663162231,
+    "timestamp": "2025-01-20T10:58:58.569321"
   },
   {
     "guid": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
     "summary": "Automated invoice postings intermittently failed, leaving some invoices in 'Pending Approval' status. Background service handling auto-posting had not been restarted after a routine system patch. Delayed payment approvals impacting vendor relationships. Reactive: Restart the background posting service. Proactive: Implement automated checks to confirm service restarts post-patch. Subsequent invoice posted correctly, resolving the backlog. Resolved Resolution Type: Administrators. Additional Notes: Finance team verified pending invoiced were reconciled within the same day.",
-    "duration_ms": 64541.24140739441,
-    "timestamp": "2025-01-19T23:34:00.757575"
+    "duration_ms": 79963.38105201721,
+    "timestamp": "2025-01-20T10:59:02.402708"
+  },
+  {
+    "guid": "5d8d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Finance System: Expense Management Tool froze when exporting monthly expense summaries to Excel, sometimes crashing altogether. The export function tried to process excessive data in one go without sufficient memory management. Developers introduced a paginated export approach. A permanent fix is scheduled for the next major release of the tool. Incomplete reporting for monthly budget reviews. Possible data corruption in partially generated files. Reduce the time window or filter smaller expense sets. Proactive: Implement memory optimization or pagination in the export function.",
+    "duration_ms": 49389.55283164978,
+    "timestamp": "2025-01-20T10:59:45.853218"
+  },
+  {
+    "guid": "7f0d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Up to 20% of cleared invoices didn\u2019t reflect their paid status, prompting manual checks. A scheduled job that reconciles transaction IDs encountered mismatched references after an update. The scheduled job resumed matching paid invoiced accurately. Inaccurate financial statements could have been caused by the problem. The problem has been resolved and no duplicates have been found. The incident has been reported to Finance System: Invoice Tracking System (FSTS) by Lucy Barnes from FSTS.",
+    "duration_ms": 49706.20560646057,
+    "timestamp": "2025-01-20T10:59:48.276529"
+  },
+  {
+    "guid": "8g1d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Incident ID: INC-3008 Reported by: George Walker from Finance System: Revenue Forecast App. Forecast models wouldn\u2019t include data from the latest sales pipeline, skewing projected revenue. API token expired, preventing the forecast app from accessing updated CRM info. Mitigation: Reactive: Renew CRM integration token. Proactive: Automate token refresh processes and set up expiry notifications. Status: Resolved Resolution Type: First Line Support Additional Notes: None.",
+    "duration_ms": 48170.66287994385,
+    "timestamp": "2025-01-20T10:59:50.574371"
+  },
+  {
+    "guid": "6e9d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "System timeouts occurred when uploading multiple tax documents ahead of the quarterly filing deadline. After the fifth document, the page timed out, forcing a fresh login. An HTTP session limit was enforced too aggressively for consecutive large file uploads. Reactive: Encourage smaller uploads or offline bundling. Proactive: Extend session durations and refine upload concurrency settings. Resolved: Administrators adjusted the portal\u2019s session thresholds. No late filing penalties were incurred as the fix was timely.",
+    "duration_ms": 58041.66221618652,
+    "timestamp": "2025-01-20T10:59:55.942805"
+  },
+  {
+    "guid": "0i3d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Dashboard widgets wouldn\u2019t display aggregated data for departmental expenses, only showing 'No Data Available' A missing data aggregation script, accidentally disabled during a routine maintenance window. IT found the disabled script and restored it. The dashboard recalculated each department\u2019s expense summary properly. The spending overview was fully available again within an hour. The incident has been resolved and is no longer affecting the system. For confidential support call the Samaritans in the UK on 08457 90 90 90, visit a local Samaritans branch or click here for details.",
+    "duration_ms": 40489.34507369995,
+    "timestamp": "2025-01-20T11:00:28.766876"
+  },
+  {
+    "guid": "9h2d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Employees were reimbursed incorrect mileage rates, leading to overpayments. A recent policy update wasn't reflected in the system\u2019s rate table. Finance corrected the rate table and adjusted any overpaid claims. An automated notification was added to ensure rate changes are updated in real time. Employees were informed to double-check their statements. The issue has been resolved and no further action will be taken. The incident was reported by Hannah King from Finance System: Travel Reimbursement Platform. For confidential support call the Samaritans on 08457 90 90 90, visit a local Samaritans branch or click here.",
+    "duration_ms": 44359.007358551025,
+    "timestamp": "2025-01-20T11:00:30.213242"
   }
 ]

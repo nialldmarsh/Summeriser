@@ -62,9 +62,9 @@ def main():
     workers = config.get("workers", 4)
 
     summarizer_scripts = [
-        "models/t5_summarizer.py",
-        "models/bart_summarizer.py",
-        "models/bert_summarizer.py",
+        "t5_summarizer.py",
+        "bart_summarizer.py",
+        "bert_summarizer.py",
     ]
 
     # Ensure output directory exists

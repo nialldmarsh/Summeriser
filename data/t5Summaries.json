@@ -1,20 +1,62 @@
 [
   {
+    "guid": "4c7d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Incident ID: INC-3004 Reported by: Sophie Clarke from Finance System: Invoice Approval Workflow What Went Wrong: Approval notifications were not sent to the designated approvers, leaving invoices in limbo . Why: A misconfiguration in the notification module after the system was migrated to a new SMTP server . How: No email or in-app notifications triggered, so managers were unaware of pending approvals .",
+    "duration_ms": 83070.1596736908,
+    "timestamp": "2025-01-20T10:59:04.656696"
+  },
+  {
     "guid": "3b6d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
     "summary": "True story: dashboard remained blank and data points never loaded when applying new filters . Identified Risks: - Delayed financial reporting to management if data is not visible . Incident ID: INC-3003 Reported by: Daniel Green from Finance System: Financial Analytics Dashboard Incident ID: INC-3003 Resolved Resolution Type: Vendor Patch Rollback Identified Risks: - Delayed financial reporting to management if data is not visible .",
-    "duration_ms": 68757.8775882721,
-    "timestamp": "2025-01-19T23:34:04.455129"
+    "duration_ms": 84765.2747631073,
+    "timestamp": "2025-01-20T10:59:06.344028"
   },
   {
     "guid": "2a5d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
     "summary": "True Story: Incident ID: INC-3002 Administrators identified the offline service handling auto-posting and manually restarted it . Subsequent invoices posted correctly, resolving the backlog. Resolution Type: Administrators Additional Notes: Finance team verified pending invoices were reconciled within the same day . True Story: Incident ID: INC-3002 Administrators identified the offline service handling auto-posting and manually restarted it. Subsequent invoices posted correctly.",
-    "duration_ms": 70172.52159118652,
-    "timestamp": "2025-01-19T23:34:05.864770"
+    "duration_ms": 87755.71918487549,
+    "timestamp": "2025-01-20T10:59:09.326396"
   },
   {
     "guid": "7f1c3b47-8e1a-4c29-9b4f-c1e76c1d3e4a",
     "summary": "Expense Claim Portal: Expense Claim Portal Incident ID: INC-3001 Reported by: Alice Brown from Finance System: Expense Claim Portal What Went Wrong: Receipts failed to upload, and the portal displayed a timeout error after the second attachment . Identified Risks: - Delayed reimbursement cycle - Possible duplication of claims if employees retry submissions. Proactive: Increase server file size limits and add more detailed error feedback for large",
-    "duration_ms": 70897.32933044434,
-    "timestamp": "2025-01-19T23:34:06.582578"
+    "duration_ms": 89418.81656646729,
+    "timestamp": "2025-01-20T10:59:10.985488"
+  },
+  {
+    "guid": "5d8d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Expense Management Tool froze when exporting monthly expense summaries to Excel, sometimes crashing altogether . Incident ID: INC-3005 Brandon Lee from Finance System: Expense Management Tool Incident ID: INC-3005 Brandon Lee from Finance System: Expense Management Tool Incident ID: INC-3005 Brandon Lee from Finance System: Expense Management Tool Incident ID: INC-3005 Brandon Lee from Finance System: Expense Management Tool Incident ID: INC-3005",
+    "duration_ms": 64262.54153251648,
+    "timestamp": "2025-01-20T11:00:08.929227"
+  },
+  {
+    "guid": "8g1d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Revenue Forecast App Incident ID: INC-3008 Reported by: George Walker from Finance System: Revenue Forecast App What Went Wrong: Forecast models wouldn\u2019t include data from the latest sales pipeline, skewing projected revenue . Why: API token expired, preventing the forecast app from accessing updated sales pipeline info. Identified Risks: - Incorrect strategic decisions based on outdated pipeline figures. Identified Risks: - Incorrect strategic decisions based on outdated pipeline figures.",
+    "duration_ms": 62303.90906333923,
+    "timestamp": "2025-01-20T11:00:13.291400"
+  },
+  {
+    "guid": "6e9d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "a sentence. Incident ID: INC-3006 Reported by: Maria Black from Finance System: Tax Compliance Portal What Went Wrong: System timeouts occurred when uploading multiple tax documents ahead of the quarterly filing deadline. How: After the fifth document, the page timed out, forcing a fresh login. Incident ID: INC-3006 Reported by: Maria Black from Finance System: Tax Compliance Portal What Went Wrong: System timeouts occurred when uploading multiple tax documents ahead of the quarterly filing deadline",
+    "duration_ms": 69572.35407829285,
+    "timestamp": "2025-01-20T11:00:15.917360"
+  },
+  {
+    "guid": "7f0d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Incident ID: INC-3007 Reported by: Lucy Barnes from Finance System: Invoice Tracking System What Went Wrong: Automatic matching of paid invoices to accounts failed intermittently . How: On certain days, up to 20% of cleared invoices didn\u2019t reflect their paid status, prompting manual checks . Mitigation: Temporary manual reconciliation. Status: Resolved Resolution Type: Second Line Additional Notes: Finance staff double-checked recent transactions to confirm no duplicates occurred.",
+    "duration_ms": 67415.81869125366,
+    "timestamp": "2025-01-20T11:00:16.743218"
+  },
+  {
+    "guid": "9h2d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Incident ID: INC-3009 Reported by: Hannah King from Finance System: Travel Reimbursement Platform What Went Wrong: Employees were reimbursed incorrect mileage rates . Why: A recent policy update wasn't reflected in the system's rate table, causing it to apply legacy values . Mitigation: Reactive: Manually correct reimbursements identified as overpaid. Automated notification was added to ensure rate changes are updated in real time.",
+    "duration_ms": 30732.643604278564,
+    "timestamp": "2025-01-20T11:00:39.663876"
+  },
+  {
+    "guid": "0i3d9c83-4f6b-4e1d-8c7a-9b2e3f4d5c6b",
+    "summary": "Incident ID: INC-3010 Reported by: Isla Morris from Finance System: Expense Dashboard What Went Wrong: Dashboard widgets wouldn\u2019t display aggregated data for departmental expenses, only showing 'No Data Available'. How: Even though individual expense entries were visible, the expense summary widget remained empty. How: Even though individual expense entries were visible, the expense summary widget remained empty. How: Even though individual expense entries were visible, the dashboard recalculated each department\u2019s expense summary",
+    "duration_ms": 28497.575283050537,
+    "timestamp": "2025-01-20T11:00:41.789976"
   }
 ]
